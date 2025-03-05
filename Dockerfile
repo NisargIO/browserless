@@ -8,7 +8,7 @@ COPY Caddyfile ./
 
 RUN caddy fmt --overwrite Caddyfile
 
-FROM browserless/multi
+FROM browserless/chrome:1-chrome-stable
 
 ENV ENABLE_DEBUGGER=false
 ENV DEBUG=browserless:server
@@ -21,6 +21,8 @@ COPY --from=caddy /usr/bin/caddy /usr/bin/caddy
 COPY --from=parallel /usr/bin/parallel /usr/bin/parallel
 
 COPY --chmod=755 scripts/* ./
+
+RUN npx playwright install ffmpeg
 
 ENTRYPOINT ["/bin/sh"]
 
